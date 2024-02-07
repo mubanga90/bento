@@ -8,7 +8,7 @@
     "watch": "nodemon -w src -e ts -x  'npm run test'",
     "build": "xo && tsc && vite build",
     "preview": "vite preview",
-    "test": "xo",
+    "test": "xo && tsc",
     "prepare": "husky"
   },
   "devDependencies": {

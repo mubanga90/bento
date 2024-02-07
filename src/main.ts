@@ -13,3 +13,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 const bento = new Bento({
 	gridElement: document.querySelector<HTMLElement>('#grid')!,
 });
+
+window.addEventListener('resize', () => {
+	bento.setLayout();
+});
