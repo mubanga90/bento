@@ -1,6 +1,8 @@
 {
     "prettier": true,
     "rules": {
-        "import/extensions": "off"
+        "import/extensions": "off",
+        "radix": ["error", "as-needed"],
+        "no-labels": ["error", { "allowLoop": true }]
     }
 }

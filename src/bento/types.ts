@@ -1,7 +1,10 @@
 export type GridItem = {
+	index: number;
 	element: HTMLElement;
 	minWidth: number;
 	minHeight: number;
+	x?: number;
+	y?: number;
 };
 
 export type GridSize = {
