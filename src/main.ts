@@ -1,5 +1,5 @@
 import './style.css';
-import Bento from './bento/bento';
+import { Bento } from './bento/bento';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 <div id="grid">

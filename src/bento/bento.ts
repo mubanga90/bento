@@ -1,23 +1,6 @@
-type GridItem = {
-	element: HTMLElement;
-	minWidth: number;
-	minHeight: number;
-};
+import type { GridItem, GridSize, BentoOptions } from './types';
 
-type GridSize = {
-	width: number;
-	height: number;
-	columns: number;
-	rows: number;
-};
-
-type BentoOptions = {
-	gridElement: HTMLElement;
-	preferredCellWidth?: number;
-	preferredCellHeight?: number;
-};
-
-class Bento {
+export class Bento {
 	gridElement = document.querySelector<HTMLElement>('#bento-grid')!;
 	preferredCellWidth = 100;
 	preferredCellHeight = 100;
@@ -64,7 +47,6 @@ class Bento {
 	};
 
 	// - Take the screen width, get cell sizes
-
 	getGridSize = (gridElement: HTMLElement, width: number, height: number) => {
 		const rect = gridElement.getBoundingClientRect();
 		const columns = Math.floor(rect.width / width);
@@ -73,7 +55,6 @@ class Bento {
 		// If (height > width) {
 		// Could do something depending of landscape or portrait
 		// }
-
 		return {
 			width: rect.width,
 			height: rect.height,
@@ -124,12 +105,5 @@ class Bento {
 		return true;
 	};
 }
-
-// - Add them to a container and add apropriate grid-row/column-ends
-// - "Predict" where they will be placed
-
-// - Find empty spots
-// - Fill where possible by sizing
-// - Add filler items where not
 
 export default Bento;
