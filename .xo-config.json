@@ -2,7 +2,31 @@
     "prettier": true,
     "rules": {
         "import/extensions": "off",
-        "radix": ["error", "as-needed"],
-        "no-labels": ["error", { "allowLoop": true }]
+        "radix": [
+            "error",
+            "as-needed"
+        ],
+        "no-labels": [
+            "error",
+            {
+                "allowLoop": true
+            }
+        ],
+        "max-lines": [
+            "warn",
+            {
+                "max": 150,
+                "skipComments": true,
+                "skipBlankLines": true
+            }
+        ],
+        "max-lines-per-function": [
+            "warn",
+            {
+                "max": 20,
+                "skipBlankLines": true,
+                "skipComments": true
+            }
+        ]
     }
 }

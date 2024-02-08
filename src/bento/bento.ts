@@ -1,7 +1,9 @@
+import { getItems, fillEmpty, setItemStyle } from './dom';
+import { debugGrid, getGridSize, createGrid, populateGrid } from './grid';
+import { assignItemToCells } from './item';
 import type { GridItem, GridSize, BentoOptions } from './types';
-import { getItems, getGridSize } from './utils';
 
-class Bento {
+export default class Bento {
 	gridElement = document.querySelector<HTMLElement>('#bento-grid')!;
 	preferredCellWidth = 100;
 	preferredCellHeight = 100;
@@ -25,95 +27,22 @@ class Bento {
 	}
 
 	setLayout = () => {
+		this.setupGrid();
 		this.items = getItems(this.gridElement);
+		populateGrid(this.items, this.grid, this.gridSize);
+		debugGrid(this.grid);
+		this.stretchToFill();
+		fillEmpty(this.grid, this.gridElement, this.gridSize);
+	};
+
+	setupGrid = () => {
 		this.gridSize = getGridSize(
 			this.gridElement,
 			this.preferredCellWidth,
 			this.preferredCellHeight
 		);
-
 		this.gridElement.style.gridTemplateColumns = `repeat(${this.gridSize.columns}, 1fr)`;
-
-		this.grid = Array.from<number[]>({ length: this.gridSize.rows }).map(() =>
-			Array.from<number>({ length: this.gridSize.columns }).fill(-1)
-		);
-
-		itemLoop: for (const item of this.items) {
-			let placed = false;
-			for (let y = 0; y < this.gridSize.rows; y++) {
-				for (let x = 0; x < this.gridSize.columns; x++) {
-					if (this.checkPlacement(x, y, item)) {
-						this.placeItem(x, y, item);
-						item.x = x;
-						item.y = y;
-						this.setItemStyle(item);
-						placed = true;
-						continue itemLoop;
-					}
-				}
-			}
-
-			if (!placed) {
-				console.error('Could not place item', item.index);
-				item.element.style.display = 'none';
-			}
-		}
-
-		this.debugGrid();
-		this.stretchToFill();
-
-		// This.fillEmpty();
-	};
-
-	checkPlacement = (
-		x: number,
-		y: number,
-		item: GridItem,
-		debug = false
-	): boolean => {
-		// Check if x or y is out of bounds
-		if (x < 0 || y < 0 || y >= this.grid.length || x >= this.grid[0].length) {
-			if (debug) console.log('Out of bounds');
-			return false;
-		}
-
-		// Check if the cell at grid[x][y] is true
-		if (this.grid[y][x] !== -1) {
-			if (debug) console.log('Is filled');
-			return false;
-		}
-
-		// Check the cells the item is trying to occupy
-		for (let row = y; row < y + item.minHeight; row++) {
-			for (let column = x; column < x + item.minWidth; column++) {
-				// Check if the cell is out of bounds
-				if (column >= this.grid[0].length || row >= this.grid.length) {
-					if (debug) console.log('Cell is out of bounds', column, row);
-					return false;
-				}
-
-				// Check if the cell is true
-				if (this.grid[row][column] !== -1) {
-					if (debug) console.log('Cell is filled', column, row);
-					return false;
-				}
-			}
-		}
-
-		// If none of the cells are true or out of bounds, return true
-		return true;
-	};
-
-	placeItem = (x: number, y: number, item: GridItem) => {
-		for (let row = y; row < y + (item.actualHeight ?? item.minHeight); row++) {
-			for (
-				let column = x;
-				column < x + (item.actualWidth ?? item.minWidth);
-				column++
-			) {
-				this.grid[row][column] = item.index;
-			}
-		}
+		this.grid = createGrid(this.gridSize.rows, this.gridSize.columns);
 	};
 
 	stretchToFill = () => {
@@ -167,23 +96,6 @@ class Bento {
 						(a.emptyNeighborsRight! + a.emptyNeighborsBottom!)
 				);
 
-			console.log('--------------------');
-			for (const item of itemsToStretch) {
-				console.log(
-					'Stretch item:',
-					item.index,
-					'to',
-					item.actualWidth,
-					item.actualHeight,
-					'neighbors right:',
-					item.emptyNeighborsRight,
-					'neighbors bottom:',
-					item.emptyNeighborsBottom,
-					'neighbors total:',
-					item.emptyNeighborsRight! + item.emptyNeighborsBottom!
-				);
-			}
-
 			if (itemsToStretch.length === 0) break;
 
 			const item = itemsToStretch[0];
@@ -202,49 +114,11 @@ class Bento {
 					console.log('Stretching down');
 				}
 
-				this.placeItem(item.x!, item.y!, item);
-				this.setItemStyle(item);
+				assignItemToCells(this.grid, item.x!, item.y!, item);
+				setItemStyle(item);
 
-				this.debugGrid();
+				debugGrid(this.grid);
 			}
 		}
-	};
-
-	debugGrid = () => {
-		console.log(
-			this.grid
-				.map((row) =>
-					row
-						.map((cell) => (cell === -1 ? '.  ' : String(cell).padEnd(3, ' ')))
-						.join(' ')
-				)
-				.join('\n')
-		);
-	};
-
-	fillEmpty = () => {
-		for (let y = 0; y < this.gridSize.rows; y++) {
-			for (let x = 0; x < this.gridSize.columns; x++) {
-				if (this.grid[y][x] === -1) {
-					const filler = document.createElement('div');
-					filler.classList.add('filler');
-					filler.style.gridColumnStart = `${x + 1}`;
-					filler.style.gridColumnEnd = `${x + 2}`;
-					filler.style.gridRowStart = `${y + 1}`;
-					filler.style.gridRowEnd = `${y + 2}`;
-					this.gridElement.append(filler);
-				}
-			}
-		}
-	};
-
-	setItemStyle = (item: GridItem) => {
-		item.element.style.removeProperty('display');
-		item.element.style.gridColumnStart = `${item.x! + 1}`;
-		item.element.style.gridColumnEnd = `${item.x! + (item.actualWidth ?? item.minWidth) + 1}`;
-		item.element.style.gridRowStart = `${item.y! + 1}`;
-		item.element.style.gridRowEnd = `${item.y! + (item.actualHeight ?? item.minHeight) + 1}`;
 	};
 }
-
-export default Bento;

@@ -9,10 +9,12 @@
     "build": "npm test && vite build",
     "preview": "vite preview",
     "test": "tsc && xo --fix && stylelint 'src/**/*.css' --fix",
-    "prepare": "husky"
+    "prepare": "husky",
+    "husky": "tsc && xo && stylelint 'src/**/*.css'"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.17",
+    "css-houdini-squircle": "^0.3.0",
     "husky": "^9.0.10",
     "nodemon": "^3.0.3",
     "postcss": "^8.4.35",
