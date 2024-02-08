@@ -28,14 +28,17 @@ body {
 
 #grid {
 	display: grid;
-	width: 100%;
-	height: 100%;
+	width: 2400px;
+	height: 1380px;
 
 	/* Should be set by js */
-	gap: 1rem;
+	gap: 1.5rem;
 
 	.item {
-		padding: 1rem;
-		background: var(--gray);
+		padding: 2rem;
+		background: paint(squircle);
+		--squircle-smooth: 1;
+		--squircle-radius: 48px;
+		--squircle-fill: #f45;
 	}
 }

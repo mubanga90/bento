@@ -5,8 +5,8 @@ import type { GridItem, GridSize, BentoOptions } from './types';
 
 export default class Bento {
 	gridElement = document.querySelector<HTMLElement>('#bento-grid')!;
-	preferredCellWidth = 100;
-	preferredCellHeight = 100;
+	preferredCellWidth = 120;
+	preferredCellHeight = 115;
 
 	items: GridItem[] = [];
 	gridSize: GridSize = {
@@ -20,8 +20,10 @@ export default class Bento {
 
 	constructor(options: BentoOptions) {
 		this.gridElement = options.gridElement;
-		this.preferredCellWidth = options.preferredCellWidth ?? 100;
-		this.preferredCellHeight = options.preferredCellHeight ?? 100;
+		this.preferredCellWidth =
+			options.preferredCellWidth ?? this.preferredCellWidth;
+		this.preferredCellHeight =
+			options.preferredCellHeight ?? this.preferredCellHeight;
 
 		this.setLayout();
 	}
