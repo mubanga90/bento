@@ -1,5 +1,5 @@
 import { insertItemIntoGrid } from './item';
-import { GridItem, GridSize } from './types';
+import { type GridItem, type GridSize } from './types';
 
 export function createGrid(rows: number, columns: number): number[][] {
 	return Array.from<number[]>({ length: rows }).map(() =>
