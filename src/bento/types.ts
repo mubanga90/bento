@@ -5,6 +5,10 @@ export type GridItem = {
 	minHeight: number;
 	x?: number;
 	y?: number;
+	actualWidth?: number;
+	actualHeight?: number;
+	emptyNeighborsRight?: number;
+	emptyNeighborsBottom?: number;
 };
 
 export type GridSize = {

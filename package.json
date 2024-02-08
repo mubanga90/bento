@@ -5,15 +5,23 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "watch": "nodemon -w src -e ts -x  'npm run test'",
-    "build": "xo && tsc && vite build",
+    "watch": "nodemon -w src -e ts css -x  'npm test'",
+    "build": "npm test && vite build",
     "preview": "vite preview",
-    "test": "xo && tsc",
+    "test": "tsc && xo --fix && stylelint 'src/**/*.css' --fix",
     "prepare": "husky"
   },
   "devDependencies": {
+    "autoprefixer": "^10.4.17",
     "husky": "^9.0.10",
     "nodemon": "^3.0.3",
+    "postcss": "^8.4.35",
+    "postcss-cli": "^11.0.0",
+    "postcss-load-config": "^5.0.2",
+    "postcss-nested": "^6.0.1",
+    "stylelint": "^16.2.1",
+    "stylelint-config-idiomatic-order": "^10.0.0",
+    "stylelint-config-standard": "^36.0.0",
     "typescript": "^5.2.2",
     "vite": "^5.0.8",
     "xo": "^0.57.0"
