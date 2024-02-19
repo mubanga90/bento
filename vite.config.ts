@@ -2,6 +2,6 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
 	esbuild: {
-		drop: ['console', 'debugger'],
+		// X drop: ['console', 'debugger'],
 	},
 });
