@@ -31,8 +31,8 @@ const bentoOptions = {
 	preferredCellSize: { x: 120, y: 115 },
 };
 
-// @ts-expect-error - bento should probably be static?
-const bento = new Bento(
+// @ts-expect-error - bentoInstance is not used
+const bentoInstance = new Bento(
 	document.querySelector<HTMLElement>('#grid')!,
 	bentoOptions
 );
