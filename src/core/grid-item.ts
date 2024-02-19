@@ -8,9 +8,9 @@ class GridItem {
 	minSize: Vector2 = { x: 1, y: 1 };
 	position: Vector2 = { x: 0, y: 0 };
 	actualSize?: Vector2;
+	placed: boolean;
 	emptyNeighborsRight = 0;
 	emptyNeighborsBottom = 0;
-	placed: boolean;
 
 	constructor(element: HTMLElement, index: number) {
 		this.element = element;
@@ -24,49 +24,18 @@ class GridItem {
 		this.grid = grid;
 	};
 
-	// @todo: refactor, split in to smaller methods
 	checkPlacement = (position: Vector2): boolean => {
 		if (this.grid === undefined) {
 			throw new Error('Grid not set');
 		}
 
 		for (let row = position.y; row < position.y + this.minSize.y; row++) {
-			for (
-				let column = position.x;
-				column < position.x + this.minSize.x;
-				column++
-			) {
-				if (!this.grid.isOpenSpace({ x: column, y: row })) {
-					return false;
-				}
+			if (!this.isCellOpen({ x: position.x, y: row })) {
+				return false;
 			}
 		}
 
 		return true;
-	};
-
-	canStretchOnAxis = (axis: 'x' | 'y') => {
-		const end = this.position[axis] + this.actualSize![axis];
-		const otherAxis = axis === 'x' ? 'y' : 'x';
-		const otherEnd = this.position[otherAxis] + this.actualSize![otherAxis];
-
-		if (end >= this.grid!.gridSize[axis]) return false;
-		for (let i = this.position[otherAxis]; i < otherEnd; i++) {
-			if (
-				!this.grid!.isOpenSpace(
-					axis === 'x' ? { x: end, y: i } : { x: i, y: end }
-				)
-			)
-				return false;
-		}
-
-		return true;
-	};
-
-	canStretchInDirection = (axis: 'x' | 'y', direction: 'Right' | 'Bottom') => {
-		if (this.canStretchOnAxis(axis)) {
-			this[`emptyNeighbors${direction}`] += this.actualSize![axis];
-		}
 	};
 
 	canStretch = () => {
@@ -92,6 +61,47 @@ class GridItem {
 		}
 
 		this.grid?.assignItemToCells(this);
+	};
+
+	private readonly isCellOpen = (position: Vector2): boolean => {
+		for (
+			let column = position.x;
+			column < position.x + this.minSize.x;
+			column++
+		) {
+			if (!this.grid!.isOpenSpace({ x: column, y: position.y })) {
+				return false;
+			}
+		}
+
+		return true;
+	};
+
+	private readonly canStretchInDirection = (
+		axis: 'x' | 'y',
+		direction: 'Right' | 'Bottom'
+	) => {
+		if (this.canStretchOnAxis(axis)) {
+			this[`emptyNeighbors${direction}`] += this.actualSize![axis];
+		}
+	};
+
+	private readonly canStretchOnAxis = (axis: 'x' | 'y') => {
+		const end = this.position[axis] + this.actualSize![axis];
+		const otherAxis = axis === 'x' ? 'y' : 'x';
+		const otherEnd = this.position[otherAxis] + this.actualSize![otherAxis];
+
+		if (end >= this.grid!.getGridSize()[axis]) return false;
+		for (let i = this.position[otherAxis]; i < otherEnd; i++) {
+			if (
+				!this.grid!.isOpenSpace(
+					axis === 'x' ? { x: end, y: i } : { x: i, y: end }
+				)
+			)
+				return false;
+		}
+
+		return true;
 	};
 }
 

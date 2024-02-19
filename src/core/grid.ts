@@ -2,10 +2,12 @@ import type Vector2 from '../types/vector2';
 import type GridItem from './grid-item';
 
 class Grid {
-	grid: number[][] = [];
-	gridSize: Vector2 = { x: 0, y: 0 };
-	items: GridItem[] = [];
-	stretchableItems: GridItem[] = [];
+	private grid: number[][] = [];
+	private gridSize: Vector2 = { x: 0, y: 0 };
+	private items: GridItem[] = [];
+	private stretchableItems: GridItem[] = [];
+
+	getGridSize = () => this.gridSize;
 
 	createGrid = (gridSize: Vector2) => {
 		this.gridSize = gridSize;
@@ -26,63 +28,6 @@ class Grid {
 		}
 	};
 
-	insertItemIntoGrid = (gridItem: GridItem) => {
-		for (let y = 0; y < this.gridSize.y; y++) {
-			for (let x = 0; x < this.gridSize.x; x++) {
-				if (gridItem.checkPlacement({ x, y })) {
-					gridItem.position = { x, y };
-					this.assignItemToCells(gridItem);
-					gridItem.placed = true;
-					return true;
-				}
-			}
-		}
-
-		return false;
-	};
-
-	// Move to item?
-	// Split into smaller methods
-	assignItemToCells(item: GridItem) {
-		for (
-			let row = item.position.y;
-			row <
-			item.position.y + (item.actualSize ? item.actualSize.y : item.minSize.y);
-			row++
-		) {
-			for (
-				let column = item.position.x;
-				column <
-				item.position.x +
-					(item.actualSize ? item.actualSize.x : item.minSize.x);
-				column++
-			) {
-				this.grid[row][column] = item.index;
-			}
-		}
-
-		this.debugGrid();
-	}
-
-	isOpenSpace = (cellPosition: Vector2): boolean => {
-		if (this.isOutOfBounds(cellPosition)) return false;
-		if (this.isCellFilled(cellPosition)) return false;
-		return true;
-	};
-
-	isOutOfBounds(cellPosition: Vector2): boolean {
-		return (
-			cellPosition.x < 0 ||
-			cellPosition.y < 0 ||
-			cellPosition.y >= this.grid.length ||
-			cellPosition.x >= this.grid[0].length
-		);
-	}
-
-	isCellFilled(cellPosition: Vector2): boolean {
-		return this.grid[cellPosition.y][cellPosition.x] !== -1;
-	}
-
 	fillGrid = () => {
 		this.stretchableItems = this.items.filter((item) => item.placed);
 		let itemToStretch = this.stretchableItems[0];
@@ -94,17 +39,73 @@ class Grid {
 
 			itemToStretch.stretch();
 		}
-
-		this.debugGrid();
 	};
 
-	checkIfItemsCanStretch = () => {
+	isOpenSpace = (cellPosition: Vector2): boolean => {
+		if (this.isOutOfBounds(cellPosition)) return false;
+		if (this.isCellFilled(cellPosition)) return false;
+		return true;
+	};
+
+	assignItemToCells(item: GridItem) {
+		const endRow =
+			item.position.y + (item.actualSize ? item.actualSize.y : item.minSize.y);
+		const endColumn =
+			item.position.x + (item.actualSize ? item.actualSize.x : item.minSize.x);
+
+		for (let row = item.position.y; row < endRow; row++) {
+			for (let column = item.position.x; column < endColumn; column++) {
+				this.grid[row][column] = item.index;
+			}
+		}
+	}
+
+	debugGrid = () => {
+		console.log(
+			this.grid
+				.map((row) =>
+					row
+						.map((cell) => (cell === -1 ? '.  ' : String(cell).padEnd(3, ' ')))
+						.join(' ')
+				)
+				.join('\n')
+		);
+	};
+
+	/** Placing **/
+
+	private readonly insertItemIntoGrid = (gridItem: GridItem) => {
+		for (let y = 0; y < this.gridSize.y; y++) {
+			if (this.tryPlaceItemOnRow(gridItem, y)) {
+				return true;
+			}
+		}
+
+		return false;
+	};
+
+	private readonly tryPlaceItemOnRow = (gridItem: GridItem, y: number) => {
+		for (let x = 0; x < this.gridSize.x; x++) {
+			if (gridItem.checkPlacement({ x, y })) {
+				gridItem.position = { x, y };
+				this.assignItemToCells(gridItem);
+				gridItem.placed = true;
+				return true;
+			}
+		}
+
+		return false;
+	};
+
+	/** Stretching **/
+
+	private readonly checkIfItemsCanStretch = () => {
 		for (const item of this.stretchableItems) {
 			item.canStretch();
 		}
 	};
 
-	findFirstStretchableItem = () => {
+	private readonly findFirstStretchableItem = () => {
 		this.stretchableItems = this.stretchableItems
 			.filter((item) => {
 				return item.emptyNeighborsRight + item.emptyNeighborsBottom > 0;
@@ -119,17 +120,20 @@ class Grid {
 		return this.stretchableItems[0] || null;
 	};
 
-	debugGrid = () => {
-		console.log(
-			this.grid
-				.map((row) =>
-					row
-						.map((cell) => (cell === -1 ? '.  ' : String(cell).padEnd(3, ' ')))
-						.join(' ')
-				)
-				.join('\n')
+	/** Placement checks **/
+
+	private isOutOfBounds(cellPosition: Vector2): boolean {
+		return (
+			cellPosition.x < 0 ||
+			cellPosition.y < 0 ||
+			cellPosition.y >= this.grid.length ||
+			cellPosition.x >= this.grid[0].length
 		);
-	};
+	}
+
+	private isCellFilled(cellPosition: Vector2): boolean {
+		return this.grid[cellPosition.y][cellPosition.x] !== -1;
+	}
 }
 
 export default Grid;

@@ -9,14 +9,12 @@ class Bento {
 	dom: DomHandler = new DomHandler();
 
 	gridElement?: HTMLElement | undefined;
-	preferredCellWidth: number;
-	preferredCellHeight: number;
+	preferredCellSize = { x: 120, y: 115 };
 
 	constructor(gridElement: HTMLElement, options: BentoOptions = {}) {
 		this.gridElement = gridElement;
 		this.dom.setGridElement(gridElement);
-		this.preferredCellWidth = options.preferredCellWidth ?? 120;
-		this.preferredCellHeight = options.preferredCellHeight ?? 115;
+		this.preferredCellSize = options?.preferredCellSize ?? { x: 120, y: 115 };
 		this.setLayout();
 		window.addEventListener('resize', this.setLayout);
 	}
@@ -25,8 +23,7 @@ class Bento {
 		const items: GridItem[] = this.dom.getItems();
 		const gridSize = calculateGridSize(
 			this.gridElement!,
-			this.preferredCellWidth,
-			this.preferredCellHeight
+			this.preferredCellSize
 		);
 		this.dom.setupGrid(gridSize);
 		this.grid.createGrid(gridSize);

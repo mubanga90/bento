@@ -28,8 +28,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 `;
 
 const bentoOptions = {
-	preferredCellWidth: 120,
-	preferredCellHeight: 115,
+	preferredCellSize: { x: 120, y: 115 },
 };
 
 // @ts-expect-error - bento should probably be static?
