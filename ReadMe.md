@@ -2,7 +2,7 @@
 
 <p align="center">
     <img src="logo/Bento Logo Dark.svg#gh-dark-mode-only" height="200">
-    <img src="logo/Bento Logo Dark.svg#gh-light-mode-only" height="200">
+    <img src="logo/Bento Logo Light.svg#gh-light-mode-only" height="200">
 </p>
 
 <p align="center">
