@@ -23,6 +23,7 @@ class DomHandler {
 			throw new Error('Grid element not set');
 		}
 
+		this.gridElement.style.display = 'grid';
 		this.gridElement.style.gridTemplateColumns = `repeat(${gridSize.x}, 1fr)`;
 	};
 
