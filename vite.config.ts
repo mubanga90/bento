@@ -1,7 +1,13 @@
+import path from 'node:path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-	esbuild: {
-		// X drop: ['console', 'debugger'],
+	build: {
+		rollupOptions: {
+			input: './src/example/index.html',
+		},
+	},
+	server: {
+		open: '/src/example/index.html',
 	},
 });
