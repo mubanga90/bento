@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/svg+xml" href="/vite.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="style.css"></link>
+		<title>Bento.js</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark-dimmed.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+        <!-- and it's easy to individually load additional languages -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+
+        <script>hljs.highlightAll();</script>
+	</head>
+	<body>
+        <div class="logo"></div>
+        <p align="center">
+            <em>A simple, small, modern, dependency-free JavaScript bento box grid system.</em>
+        </p>
+
+        <p align="center"> Below you will find a working example of a Bento.js grid, resize it to see it in action!<br> If you are looking for documentation checkout <a href="https://github.com/mubanga90/bento">the github repo</a>.</p>
+
+        <div class="container">
+            <div id="grid">
+                <div class="item" data-min-width="5" data-min-height="2">Item 0</div>
+                <div class="item" data-min-width="5" data-min-height="3">Item 1</div>
+                <div class="item" data-min-width="6" data-min-height="3">Item 2</div>
+                <div class="item" data-min-width="4" data-min-height="3">Item 3</div>
+                <div class="item" data-min-width="5" data-min-height="5">Item 4</div>
+                <div class="item" data-min-width="10" data-min-height="6">Item 5</div>
+                <div class="item" data-min-width="5" data-min-height="5">Item 6</div>
+                <div class="item" data-min-width="3" data-min-height="5">Item 7</div>
+                <div class="item" data-min-width="2" data-min-height="2">Item 8</div>
+                <div class="item" data-min-width="3" data-min-height="4">Item 9</div>
+                <div class="item" data-min-width="2" data-min-height="4">Item 10</div>
+                <div class="item" data-min-width="4" data-min-height="3">Item 11</div>
+                <div class="item" data-min-width="3" data-min-height="3">Item 12</div>
+                <div class="item" data-min-width="5" data-min-height="3">Item 13</div>
+            </div>
+            <div class="resize">
+                <label>Resize me</label>
+                <svg xmlns="http://www.w3.org/2000/svg" width="22.703" height="21.928"><path d="M1.056 21.928c0-6.531 5.661-9.034 10.018-9.375V18.1L22.7 9.044 11.073 0v4.836a10.5 10.5 0 0 0-7.344 3.352C-.618 12.946-.008 21 .076 21.928z"/></svg>
+            </div>
+        </div>
+
+        <p align="center">The above grid was created using this HTML:</p>
+        <pre>
+            <code class="language-html">&lt;div id=&quot;grid&quot;&gt;
+    &lt;div class=&quot;item&quot; data-min-width=&quot;5&quot;  data-min-height=&quot;2&quot;&gt;Item 0 &lt;/div&gt;
+    &lt;div class=&quot;item&quot; data-min-width=&quot;5&quot;  data-min-height=&quot;3&quot;&gt;Item 1 &lt;/div&gt;
+    &lt;div class=&quot;item&quot; data-min-width=&quot;6&quot;  data-min-height=&quot;3&quot;&gt;Item 2 &lt;/div&gt;
+    &lt;div class=&quot;item&quot; data-min-width=&quot;4&quot;  data-min-height=&quot;3&quot;&gt;Item 3 &lt;/div&gt;
+    &lt;div class=&quot;item&quot; data-min-width=&quot;5&quot;  data-min-height=&quot;5&quot;&gt;Item 4 &lt;/div&gt;
+    &lt;div class=&quot;item&quot; data-min-width=&quot;10&quot; data-min-height=&quot;6&quot;&gt;Item 5 &lt;/div&gt;
+    &lt;div class=&quot;item&quot; data-min-width=&quot;5&quot;  data-min-height=&quot;5&quot;&gt;Item 6 &lt;/div&gt;
+    &lt;div class=&quot;item&quot; data-min-width=&quot;3&quot;  data-min-height=&quot;5&quot;&gt;Item 7 &lt;/div&gt;
+    &lt;div class=&quot;item&quot; data-min-width=&quot;2&quot;  data-min-height=&quot;2&quot;&gt;Item 8 &lt;/div&gt;
+    &lt;div class=&quot;item&quot; data-min-width=&quot;3&quot;  data-min-height=&quot;4&quot;&gt;Item 9 &lt;/div&gt;
+    &lt;div class=&quot;item&quot; data-min-width=&quot;2&quot;  data-min-height=&quot;4&quot;&gt;Item 10&lt;/div&gt;
+    &lt;div class=&quot;item&quot; data-min-width=&quot;4&quot;  data-min-height=&quot;3&quot;&gt;Item 11&lt;/div&gt;
+    &lt;div class=&quot;item&quot; data-min-width=&quot;3&quot;  data-min-height=&quot;3&quot;&gt;Item 12&lt;/div&gt;
+    &lt;div class=&quot;item&quot; data-min-width=&quot;5&quot;  data-min-height=&quot;3&quot;&gt;Item 13&lt;/div&gt;
+&lt;/div&gt;</code>
+        </pre>
+
+        <p align="center">and this bit of JavaScript:</p>
+        <pre>
+            <code>import Bento from '../dist/main.js';
+
+const bentoOptions = {
+    preferredCellSize: { x: 47, y: 33 },
+};
+                
+const gridElement = document.querySelector('#grid');
+const _bentoInstance = new Bento(gridElement, bentoOptions);
+            </code>
+        </pre>
+		<script type="module" src="main.js"></script>
+	</body>
+</html>
