@@ -1,5 +1,8 @@
 {
     "prettier": true,
+    "ignores": [
+        "docs/**/*.js"
+    ],
     "rules": {
         "import/extensions": "off",
         "radix": [
