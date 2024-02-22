@@ -25,6 +25,7 @@ class DomHandler {
 
 		this.gridElement.style.display = 'grid';
 		this.gridElement.style.gridTemplateColumns = `repeat(${gridSize.x}, 1fr)`;
+		this.gridElement.style.gridTemplateRows = `repeat(${gridSize.y}, 1fr)`;
 	};
 
 	setItemStyles = (items: GridItem[]) => {
