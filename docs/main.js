@@ -1,4 +1,4 @@
-import Bento from './bento.js';
+import Bento from 'bento.js';
 
 const bentoOptions = {
     preferredCellSize: { x: 47, y: 33 },
