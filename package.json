@@ -36,7 +36,7 @@
     "build": "npm test && vite build --config vite.deploy.config.ts && npm run copy-js-to-docs",
     "copy-js-to-docs": "cp dist/main.js docs/bento.js",
     "preview": "vite preview",
-    "test": "tsc && xo --fix && stylelint 'src/**/*.css' --fix && jest",
+    "test": "tsc && xo --fix && stylelint 'src/**/*.css' --fix",
     "jest": "jest",
     "prepare": "husky",
     "husky": "tsc && xo && stylelint 'src/**/*.css' && jest"
