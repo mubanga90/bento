@@ -30,7 +30,7 @@ Create some markup, this should be a container for your grid, with children for 
 </div>
 ```
 
-Import bento.js and initialize for each grid on your page:
+Import Bento Grid and initialize for each grid on your page:
 
 ```
 import Bento from 'bento-js';
@@ -76,11 +76,11 @@ Item options are passed as data attributes, currently the only options are `min-
 
 ## How it works
 
-Bento.js looks at the rect size of the element and tries to fill it with it's children using a similar algorithm as [grid-auto-flow: dense](https://developer.mozilla.org/en-US/docs/Web/CSS/grid-auto-flow). It will try to place each item, checking each cell from left to right, top to bottom, if an item can't be placed (because it is to big or no cells are available, it will skip it).
+Bento Grid looks at the rect size of the element and tries to fill it with it's children using a similar algorithm as [grid-auto-flow: dense](https://developer.mozilla.org/en-US/docs/Web/CSS/grid-auto-flow). It will try to place each item, checking each cell from left to right, top to bottom, if an item can't be placed (because it is to big or no cells are available, it will skip it).
 
 Then it will try to stretch each cell to fill empty space, prioritizing horizontal stretching.
 
-By default Bento.js will run window resize. If you need to retrigger it yourself you can call:
+By default Bento Grid will run window resize. If you need to retrigger it yourself you can call:
 
 ```
 bentoInstance.setLayout();
