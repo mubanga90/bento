@@ -5,7 +5,7 @@
 		"module": "ESNext",
 		"lib": ["DOM", "DOM.Iterable", "ESNext"],
 		"skipLibCheck": true,
-		"types": ["vite/client", "node"],
+		"types": ["vite/client", "node", "jest"],
 		"allowJs": false,
 		"esModuleInterop": false,
 		"allowSyntheticDefaultImports": true,
@@ -27,5 +27,5 @@
 		"noFallthroughCasesInSwitch": true
 	},
 	"include": ["src"],
-	"exclude": ["node_modules"]
+	"exclude": ["node_modules", "tests"]
 }
