@@ -1,6 +1,6 @@
 {
   "name": "bento-grid",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "type": "module",
   "description": "A simple, small, modern, dependency-free JavaScript bento box grid system.",
